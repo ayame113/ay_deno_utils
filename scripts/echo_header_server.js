@@ -11,7 +11,7 @@ for await (const req of s) {
       protoMinor
       protoMajor*/
       ...req,
-      headers: Object.fromEntries(req.headers.entries()
-    }), null, 2)
+      headers: Object.fromEntries(req.headers.entries())
+    }, null, 2)
   });
 }
