@@ -5,12 +5,9 @@ for await (const req of s) {
   req.respond({
     headers: new Headers({'content-type': 'application/json'}),
     body: JSON.stringify({
-      /*url,
-      method
-      proto
-      protoMinor
-      protoMajor*/
-      ...req,
+      url: req.url,
+      method: req.method,
+      proto: req.proto,
       headers: Object.fromEntries(req.headers.entries())
     }, null, 2)
   });
