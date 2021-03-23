@@ -4,5 +4,5 @@ console.log("http://localhost:80/");
 for await (const req of s) {
   console.log(req)
   console.log(Object.fromEntries(req.headers.entries()))
-  req.respond({ body: Object.fromEntries(req.headers.entries()) });
+  req.respond({ body: JSON.parse(Object.fromEntries(req.headers.entries())) });
 }
