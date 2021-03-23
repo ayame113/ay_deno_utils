@@ -10,7 +10,7 @@ for await (const req of s) {
       proto
       protoMinor
       protoMajor*/
-      ...req
+      ...req,
       headers: Object.fromEntries(req.headers.entries()
     }), null, 2)
   });
