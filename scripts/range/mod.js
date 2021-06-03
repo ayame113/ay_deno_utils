@@ -17,54 +17,62 @@ class Iter {
   #from = 0;
   #to = Number.MAX_SAFE_INTEGER;
   #step = 1;
-  /** @type {Iterable<T>|undefined}*/
-  #iterable;
   /** @type {FunctionTip[]}*/
   #applyFunctions = [];
-  from(/** @type {Number}*/ n) {
-    this.#from = n;
-    return this;
-  }
-  to(/** @type {Number}*/ n) {
-    this.#to = n;
-    return this;
-  }
-  step(/** @type {Number}*/ n) {
-    this.#step = n;
-    return this;
-  }
-  with(/** @type {Iterable<T>|undefined}*/ iterable) {
-    this.#iterable = iterable;
+  constructor(/**@type {Number[]}*/ ...args) {
+    if (args.length === 1) {
+      this.#to = args[0];
+    } else if (args.length === 2) {
+      this.#from = args[0];
+      this.#to = args[1];
+    } else {
+      this.#from = args[0];
+      this.#to = args[1];
+      this.#step = args[3];
+    }
   }
   /**
-	* @template Tf
+	 * @template Tf
 	 * @param  {function(...any): Tf} fn
 	 * @return {Iter<Tf>}
 	 */
   map(fn) {
-    this.#applyFunctions.push({
+    const res = new /**@type {typeof Iter}*/ (this.constructor)(
+      this.#from,
+      this.#to,
+      this.#step,
+    );
+    res.#applyFunctions = [...this.#applyFunctions, {
       type: "map",
       fn,
-    });
-    return /** @type {*} */ (this); //Iter<T> as any as Iter<Tf>
+    }];
+    return res;
   }
   forEach(/** @type {Function}*/ fn) {
-    this.#applyFunctions.push({
+    const res = new /**@type {typeof Iter}*/ (this.constructor)(
+      this.#from,
+      this.#to,
+      this.#step,
+    );
+    res.#applyFunctions = [...this.#applyFunctions, {
       type: "forEach",
       fn,
-    });
-    return this;
+    }];
+    return res;
   }
   filter(/** @type {Function}*/ fn) {
-    this.#applyFunctions.push({
+    const res = new /**@type {typeof Iter}*/ (this.constructor)(
+      this.#from,
+      this.#to,
+      this.#step,
+    );
+    res.#applyFunctions = [...this.#applyFunctions, {
       type: "filter",
       fn,
-    });
-    return this;
+    }];
+    return res;
   }
-  /**
-	 * @return {Array<T>}
-	 */
+  /** @return {Array<T>} */
   excute() {
     return [...this];
   }
@@ -73,34 +81,28 @@ class Iter {
       this.#from,
       this.#to,
       this.#step,
-      this.#iterable,
       this.#applyFunctions,
     ));
   }
 }
 
-/**
-   * @template T
- */
+/** @template T */
 class ReangeIterator {
   /**@type {Number}*/ #from;
   /**@type {Number}*/ #to;
   /**@type {Number}*/ #step;
-  /**@type {Iterable<any>|undefined}*/ #iterable;
   /**@type {FunctionTip[]}*/ #applyFunctions;
   /**@type {Number}*/ #i;
   /**
 	 * @param {Number} from
 	 * @param {Number} to
 	 * @param {Number} step
-	 * @param {Iterable<any>|undefined} iterable
 	 * @param {FunctionTip[]} applyFunctions
 	 */
-  constructor(from, to, step, iterable, applyFunctions) {
+  constructor(from, to, step, applyFunctions) {
     this.#from = from;
     this.#to = to;
     this.#step = step;
-    this.#iterable = iterable;
     this.#applyFunctions = applyFunctions;
     this.#i = from;
   }
@@ -144,15 +146,7 @@ class ReangeIterator {
 
 export function range(/**@type {Number[]}*/ ...args) {
   /**@type {Iter<Number>}*/
-  const res = new Iter();
-  if (args.length === 1) {
-    res.to(args[0]);
-  } else if (args.length === 2) {
-    res.from(args[0]).to(args[1]);
-  } else {
-    res.from(args[0]).to(args[1]).step(args[3]);
-  }
-  return res;
+  return new Iter(...args);
 }
 
 if ("Deno" in globalThis) {
@@ -162,7 +156,7 @@ if ("Deno" in globalThis) {
       const {
         assertEquals,
       } = await import("https://deno.land/std@0.97.0/testing/asserts.ts");
-      assertEquals(new Iter().to(5).excute(), [0, 1, 2, 3, 4]);
+      assertEquals(new Iter(5).excute(), [0, 1, 2, 3, 4]);
     },
   });
   Deno.test({
@@ -171,7 +165,7 @@ if ("Deno" in globalThis) {
       const {
         assertEquals,
       } = await import("https://deno.land/std@0.97.0/testing/asserts.ts");
-      assertEquals([...new Iter().to(5)], [0, 1, 2, 3, 4]);
+      assertEquals([...new Iter(5)], [0, 1, 2, 3, 4]);
     },
   });
 }
