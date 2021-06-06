@@ -28,7 +28,7 @@ class Iter {
     } else {
       this.#from = args[0];
       this.#to = args[1];
-      this.#step = args[3];
+      this.#step = args[2];
     }
   }
   /**
@@ -108,7 +108,7 @@ class ReangeIterator {
   }
   /** @return {IteratorNextResult<T>} */
   next() {
-    const done = (this.#i < this.#to) === (this.#from < this.#to);
+    const done = (this.#i < this.#to) !== (this.#from < this.#to);
     if (done) {
       return {
         done,
@@ -145,8 +145,7 @@ class ReangeIterator {
 }
 
 export function range(/**@type {Number[]}*/ ...args) {
-  /**@type {Iter<Number>}*/
-  return new Iter(...args);
+  return /**@type {Iter<Number>}*/ (new Iter(...args));
 }
 
 if ("Deno" in globalThis) {
