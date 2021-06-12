@@ -1,2 +1,3 @@
-# deno_department
-A place for junk script that can be executed from `deno run https://～`
+# ay deno utils
+
+自分用のDeno向けutil系関数まとめ
