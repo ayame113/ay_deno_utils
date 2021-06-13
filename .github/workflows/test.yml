@@ -18,4 +18,10 @@ jobs:
       - name: Lint
         run: deno lint
       - name: Test
-        run: deno test -A
+        run: deno test -A --coverage=coverage
+      - name: Create coverage report
+        run: deno coverage ./coverage --lcov > coverage.lcov
+      - name: Codecov
+        uses: codecov/codecov-action@v1.5.2
+        with:
+          file: ./coverage.lcov
