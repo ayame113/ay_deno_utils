@@ -61,7 +61,7 @@ Deno.test({
 });
 
 Deno.test({
-  name: "binSearch async true",
+  name: "binSearch async true x10",
   fn: async () => {
     const order: number[] = [];
     const a = binSearch({
@@ -80,7 +80,7 @@ Deno.test({
 });
 
 Deno.test({
-  name: "binSearch async false",
+  name: "binSearch async false x10",
   fn: async () => {
     const order: number[] = [];
     const a = binSearch({
@@ -99,7 +99,7 @@ Deno.test({
 });
 
 Deno.test({
-  name: "binSearch sync true",
+  name: "binSearch sync true x10",
   fn: () => {
     const order: number[] = [];
     const a = binSearch({
@@ -117,7 +117,7 @@ Deno.test({
 });
 
 Deno.test({
-  name: "binSearch sync false",
+  name: "binSearch sync false x10",
   fn: () => {
     const order: number[] = [];
     const a = binSearch({
