@@ -63,7 +63,7 @@ export class SpiceRunner<T extends readonly string[]> {
         }
         if (
           shouldReadLine && line && !line.trim().startsWith("time") &&
-          !line.trim().startsWith("clk")
+          /[0-9]/.test(line)
         ) {
           const resultList = line.trim().split(/\s+/).map(Number).map((v) => {
             if (isNaN(v)) {
@@ -110,14 +110,17 @@ export class SpiceRunner<T extends readonly string[]> {
   async vtime(t: number) {
     const data = await this.spiceData;
     const i = await this.#getIndexAt(t);
+    if (i === null) {
+      throw new Error("No data was found at the specified time.");
+    }
     if (data[i].t === t) {
       //data[i]をそのまま返す
       return data[i];
     }
     //data[i]とdata[i-1]の平均を返す
     return Object.fromEntries(
-      Object.keys(data).map((
-        k: T[number],
+      Object.keys(data[i]).map((
+        k: keyof spiceData<T>,
       ) => [k, (data[i][k] + data[i - 1][k]) / 2]),
     ) as spiceData<T>;
   }
@@ -138,9 +141,12 @@ export class SpiceRunner<T extends readonly string[]> {
     const res = [];
     const fromI = await this.#getIndexAt(from);
     const toI = await this.#getIndexAt(to);
+    if (fromI === null || toI === null) {
+      throw new Error("can not find data in range");
+    }
     const isFirst = Symbol("isFirst");
     let prev: symbol | spiceData<T> = isFirst;
-    for (const i of range(fromI, toI)) {
+    for (const i of range(fromI, toI + 1)) {
       if (typeof prev !== "symbol") {
         if ((data[i][netName] < v) !== (prev[netName] < v)) {
           res.push(data[i]);
