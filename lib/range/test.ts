@@ -30,3 +30,14 @@ Deno.test({
     assertEquals([...range(5, 10, 2)], [5, 7, 9]);
   },
 });
+
+Deno.test({
+  name: "range5",
+  fn: () => {
+    assertEquals([...range(5).map((v) => v + 1).filter((n) => n < 4)], [
+      1,
+      2,
+      3,
+    ]);
+  },
+});
