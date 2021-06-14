@@ -1,4 +1,5 @@
-import { assertEquals } from "https://deno.land/std@0.98.0/testing/asserts.ts";
+import { testing } from "../std_deps.ts";
+const { assertEquals } = testing.asserts;
 
 import { binSearch } from "./mod.js";
 

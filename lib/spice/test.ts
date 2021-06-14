@@ -1,7 +1,5 @@
-import {
-  assertEquals,
-  assertThrowsAsync,
-} from "https://deno.land/std@0.98.0/testing/asserts.ts";
+import { testing } from "../std_deps.ts";
+const { assertEquals, assertThrowsAsync } = testing.asserts;
 
 import { runSpice } from "./mod.ts";
 

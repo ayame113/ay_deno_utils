@@ -1,8 +1,9 @@
 // @ts-check
 
-import { readLines } from "https://deno.land/std@0.97.0/io/mod.ts";
-import { range } from "../range/mod.js";
+import { io } from "../std_deps.ts";
+const { readLines } = io;
 
+import { range } from "../range/mod.js";
 import { binSearch } from "../binsearch/mod.js";
 
 type spiceData<K extends readonly string[]> = Record<K[number] | "t", number>;
