@@ -147,24 +147,3 @@ class ReangeIterator {
 export function range(/**@type {Number[]}*/ ...args) {
   return /**@type {Iter<Number>}*/ (new Iter(...args));
 }
-
-if ("Deno" in globalThis) {
-  Deno.test({
-    name: "range1",
-    fn: async () => {
-      const {
-        assertEquals,
-      } = await import("https://deno.land/std@0.97.0/testing/asserts.ts");
-      assertEquals(new Iter(5).excute(), [0, 1, 2, 3, 4]);
-    },
-  });
-  Deno.test({
-    name: "range2",
-    fn: async () => {
-      const {
-        assertEquals,
-      } = await import("https://deno.land/std@0.97.0/testing/asserts.ts");
-      assertEquals([...new Iter(5)], [0, 1, 2, 3, 4]);
-    },
-  });
-}
