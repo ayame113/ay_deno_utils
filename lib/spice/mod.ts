@@ -27,16 +27,24 @@ export async function runSpice<T extends readonly string[]>(
   arg: SpiceRunnerConstructorArg<T>,
 ) {
   const res = new SpiceRunner(arg);
-  await res.spiceData;
+  await res.spiceDataPromise;
   return res;
 }
 
-export class SpiceRunner<T extends readonly string[]> {
-  spiceData: Promise<spiceData<T>[]>;
+export type { SpiceRunner };
+
+class SpiceRunner<T extends readonly string[]> {
+  spiceDataPromise: Promise<spiceData<T>[]>;
+  spiceData: spiceData<T>[] | null;
   constructor(
     args: SpiceRunnerConstructorArg<T>,
   ) {
-    this.spiceData = this.#getSpiceData(args);
+    this.spiceData = null;
+    this.spiceDataPromise = (async () => {
+      //こうしないとエラーが外に伝播してキャッチできない
+      this.spiceData = await this.#getSpiceData(args);
+      return this.spiceData;
+    })();
   }
   async #getSpiceData(
     {
@@ -108,9 +116,10 @@ export class SpiceRunner<T extends readonly string[]> {
     };
   }
   /**時刻{t}におけるデータを返す。*/
-  async vtime(t: number) {
-    const data = await this.spiceData;
-    const i = await this.#getIndexAt(t);
+  vtime(t: number) {
+    const data = this.spiceData;
+    assertNotNull(data);
+    const i = this.#getIndexAt(t);
     if (i === null) {
       throw new Error("No data was found at the specified time.");
     }
@@ -129,7 +138,7 @@ export class SpiceRunner<T extends readonly string[]> {
 	 * {netName}が{v}より立ち上がる/立ち下がる時刻を調べる。
 	 * {from}から{to}の範囲で調べる。
 	 */
-  async riseOrFallThan({
+  riseOrFallThan({
     v,
     netName,
     range: [from, to],
@@ -138,10 +147,11 @@ export class SpiceRunner<T extends readonly string[]> {
     netName: T[number];
     range: [number, number];
   }) {
-    const data = await this.spiceData;
+    const data = this.spiceData;
+    assertNotNull(data);
     const res = [];
-    const fromI = await this.#getIndexAt(from);
-    const toI = await this.#getIndexAt(to);
+    const fromI = this.#getIndexAt(from);
+    const toI = this.#getIndexAt(to);
     if (fromI === null || toI === null) {
       throw new Error("can not find data in range");
     }
@@ -158,11 +168,18 @@ export class SpiceRunner<T extends readonly string[]> {
     return res;
   }
   /**時刻{time}より後で{time}に一番近いindexを返す*/
-  async #getIndexAt(t: number) {
-    const data = await this.spiceData;
+  #getIndexAt(t: number) {
+    const data = this.spiceData;
+    assertNotNull(data);
     return binSearch({
       range: [0, data.length],
       isOk: (i) => t <= data[i].t,
     });
+  }
+}
+
+function assertNotNull<T>(v: T): asserts v is NonNullable<T> {
+  if (v === null) {
+    throw new Error("value is null");
   }
 }

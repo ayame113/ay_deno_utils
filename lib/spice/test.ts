@@ -11,9 +11,9 @@ Deno.test({
       pathToResultFile: new URL("./test1.txt", import.meta.url),
       isDebug: true,
     });
-    assertEquals(await result.vtime(4E-9), { t: 4e-9, CLK: 0, D: 0, Q: 1.772 });
+    assertEquals(result.vtime(4E-9), { t: 4e-9, CLK: 0, D: 0, Q: 1.772 });
     assertEquals(
-      await result.riseOrFallThan({
+      result.riseOrFallThan({
         v: 0.9,
         netName: "CLK",
         range: [0, 10E-9],
@@ -92,9 +92,9 @@ Deno.test({
       pathToResultFile: new URL("./test2.txt", import.meta.url),
       isDebug: true,
     });
-    assertEquals(await result.vtime(0.5), { t: 0.5, Y: 0.5 });
+    assertEquals(result.vtime(0.5), { t: 0.5, Y: 0.5 });
     assertEquals(
-      await result.riseOrFallThan({
+      result.riseOrFallThan({
         v: 0.5,
         netName: "Y",
         range: [0, 1],
@@ -115,8 +115,6 @@ Deno.test({
           isDebug: true,
         });
       },
-      Error,
-      "parse error: NaN",
     );
   },
 });
