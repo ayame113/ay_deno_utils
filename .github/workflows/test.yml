@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Git Checkout Module
         uses: actions/checkout@v2
-      - uses: actions/glob
+      - uses: actions/glob@v1
       - name: Use Deno
         uses: denoland/setup-deno@v1
         with:
