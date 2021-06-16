@@ -15,7 +15,7 @@ jobs:
           deno-version: v1.x
       - name: Type Check
         #run: deno cache [*,**].[js,ts,jsx,tsx,mjs,mjsx]
-        run: glob [*,**].[js,ts,jsx,tsx,mjs,mjsx]
+        run: ls *.js
       - name: Format
         run: deno fmt --check
       - name: Lint
