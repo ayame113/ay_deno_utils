@@ -9,13 +9,14 @@ jobs:
     steps:
       - name: Git Checkout Module
         uses: actions/checkout@v2
+      - uses: actions/glob
       - name: Use Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
       - name: Type Check
         #run: deno cache [*,**].[js,ts,jsx,tsx,mjs,mjsx]
-        run: csh -fc "glob *.js"
+        run: glob *.js
       - name: Format
         run: deno fmt --check
       - name: Lint
