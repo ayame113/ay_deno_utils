@@ -13,13 +13,12 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - name: Type Check
-        #run: deno cache [*,**].[js,ts,jsx,tsx,mjs,mjsx]
-        run: deno test --no-run $(find . -regex '.*\.\(js\|ts\|jsx\|tsx\|mjs\|mjsx\)' -printf '%p ')
       - name: Format
         run: deno fmt --check
       - name: Lint
         run: deno lint
+      - name: Type Check
+        run: deno test --no-run $(find . -regex '.*\.\(js\|ts\|jsx\|tsx\|mjs\|mjsx\)' -printf '%p ')
       - name: Test
         run: deno test -A --coverage=coverage
       - name: Create coverage report
@@ -27,6 +26,6 @@ jobs:
       - name: Codecov
         uses: codecov/codecov-action@v1.5.2
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          #token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.lcov
           fail_ci_if_error: true
