@@ -1,4 +1,4 @@
-name: check fmt & lint & test & coverage
+name: Format & Lint & Type Check & Test & Coverage
 
 on: [push, pull_request]
 
