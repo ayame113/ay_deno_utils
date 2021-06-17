@@ -15,7 +15,7 @@ jobs:
           deno-version: v1.x
       - name: Type Check
         #run: deno cache [*,**].[js,ts,jsx,tsx,mjs,mjsx]
-        run: find -name *.js
+        run: find . -regex '.*\.\(js\|ts\|jsx\|tsx\|mjs\|mjsx\)' ### -exec chmod 644 {} \;
       - name: Format
         run: deno fmt --check
       - name: Lint
