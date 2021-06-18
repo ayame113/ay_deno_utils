@@ -4,6 +4,13 @@ const { assertEquals } = testing.asserts;
 import { range } from "./mod.js";
 
 Deno.test({
+  name: "range0",
+  fn: () => {
+    assertEquals(range(0).excute(), []);
+  },
+});
+
+Deno.test({
   name: "range1",
   fn: () => {
     assertEquals(range(5).excute(), [0, 1, 2, 3, 4]);
