@@ -135,9 +135,9 @@ class SpiceRunner<T extends readonly string[]> {
     ) as spiceData<T>;
   }
   /**
-	 * {netName}が{v}より立ち上がる/立ち下がる時刻を調べる。
-	 * {from}から{to}の範囲で調べる。
-	 */
+   * {netName}が{v}より立ち上がる/立ち下がる時刻を調べる。
+   * {from}から{to}の範囲で調べる。
+   */
   riseOrFallThan({
     v,
     netName,
