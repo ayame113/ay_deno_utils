@@ -9,11 +9,15 @@ const converters = [
   convert: mdToHTML,
 }, */ {
     match: (request: Request) =>
+      new URL(request.url).pathname.endsWith(".ts") &&
       !request.headers.get("user-agent")?.includes("Deno"),
     convert: tsToJs,
   },
   {
-    match: () => true,
+    match: (request: Request) => {
+      const { pathname } = new URL(request.url);
+      return pathname.endsWith(".ts") || pathname.endsWith(".ts");
+    },
     convert: ({ content }: { content: string }) => ({
       content,
       headers: { "Access-Control-Allow-Origin": "*" },
