@@ -1,7 +1,6 @@
 import {
   mdToHTML,
-  serve,
-  /*tsToJs,*/
+  serve, /*, tsToJs*/
 } from "https://deploy-gitrepo.deno.dev/v0.0.2/mod.ts";
 
 const converters = [{
