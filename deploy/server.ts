@@ -1,18 +1,18 @@
 import {
   mdToHTML,
   serve,
-  tsToJs,
+  /*tsToJs,*/
 } from "https://deploy-gitrepo.deno.dev/v0.0.2/mod.ts";
 
 const converters = [{
   // When `match` returns true, the` convert` function is called. (The first matching converter will be used.)
   match: (request: Request) => new URL(request.url).pathname.endsWith(".md"),
   convert: mdToHTML,
-}, {
+}, /*{
   match: (request: Request) =>
     !request.headers.get("user-agent")?.includes("Deno"),
   convert: tsToJs,
-}, {
+},*/ {
   match: () => true,
   convert: ({ content }: { content: string }) => ({
     content,
